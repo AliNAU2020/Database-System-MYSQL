@@ -1,0 +1,100 @@
+Ali Shaikh
+COMP 3321 – Database Systems
+October 16, 2018
+Professor Ahmet Dogruer
+Assignment 5
+Creating the Cinema Database
+      Answer: CREATE DATABASE CinemaDB;
+Create Tables and Deciding Datatypes
+MOVIE: CREATE TABLE MOVIE (
+                    MovieName varchar (50) not null,
+Description varchar(255) not null,
+CONSTRAINT PK_MOVIE_MID PRIMARY KEY (MovieName)
+)
+THEATER:  CREATE TABLE THEATER (
+                  TheaterName varchar (35) not null, 
+                 Address varchar (255) not null,
+                 City varchar (12) ,
+                 Phone char (10),
+                 DistanceToCenterOfSeattle varchar (12),
+                 CONSTRAINT PK_THEATER_TID PRIMARY KEY (TheaterName)
+       )
+SHOW_TIME:  CREATE TABLE SHOW_TIME (
+                s_id smallint (5) unsigned not null,
+                MN varchar(50) not null,
+                TN varchar(35) not null,
+                DayOfWeek varchar(9),
+                Date date,
+                ShowTime time,
+                CONSTRAINT PK_SHOW_TIME PRIMARY KEY (s_id),
+                CONSTRAINT SHOW_TIME_FK_MID FOREIGN KEY (MN)                          references
+               MOVIE (MovieName),
+               CONSTRAINT SHOW_TIME_FK_TID FOREIGN KEY (TN)                            references
+            THEATER (TheaterName)
+            )
+Insert the Data into Tables
+      MOVIE: insert these data into Movies (MovieName, Description)
+       values are:
+(‘Murder in High School Homecoming Dance’, ‘This story takes place in November 1996 when one homecoming dance in California high school turned into murder mystery when the high school students, especially junior and seniors, end up getting killed by an unknown psychopath.’),
+(‘Shark Attacks in Spring Break’, ‘Shark Attacks in Spring Break is a one horror movie where college students go for spring break in Florida turns goes awry when a 75-foot great white shark starts attacking people, creating a havoc for these students as they struggle to survive not knowing one of them could be shark’s next meal’),
+(‘Yosemite National Park: The Beauty of Wild California’, ‘Yosemite National Park: The Beauty of Wild California is an extraordinary journey of discovery and tourism, where it transports the audience to this beautiful nature of Yosemite and other mysterious parts of the park. It’s packed with excitement, information and awe, we take you on a ride to the beautiful park in Wild California’),
+(‘Block Party’, ‘It’s a story of four families fighting over one diamond, so they do a block party in a cul-de sac neighborhood to see which family gets the luxurious diamond in this hilarious comedy’),
+(‘Trapped in Vietnam’, Keith Sunderland plays the disturbed army man who tries to escape the POV along with other army men during the Vietnam War in 1967’),
+(‘The Twilight Zone in Time Machine’, ‘It’s based on the 1960’s classic, The Twilight Zone, where one man named Dalton, is trying to get to his past using the time machine, but the time machine takes him on a wild ride to era’s like the WWII, the 1970s, 1980s, etc.’)
+THEATER: insert into Theater(Theater_Name, Address, City, Phone, DistanceToCenterOfSeattle)
+Values are:
+('Wortham Theater', '2020 Herman Park Dr.', 'Houston', 7700222448, '2,368 miles'),
+('AMC Miami 15', '5501 Atlantic Rd.', ‘Miami’, 9198788977, '2,879 miles'),
+(‘AMC Theater Odessa', '4 Odessa Theatre Square', ‘Odessa’, 9258549178, '869 miles'),
+('Hawkins Southfield 18', '8721 Southfield Blvd.', 'Denver', 7203743118, '1,308 miles'),
+('Moon Plaza Twin Theaters Pasadena ', '7754 Zane Plz.', 'Pasadena', 4785435531, '695 miles')
+SHOW_TIME: insert these data into Show_Time (s_id, MN, TN, DayOfWeek, Date, ShowTime)
+   Values are:
+(‘Murder in High School Homecoming Dance', 'Wortham Theater’, ‘2018-10-16', ‘8:00:00’),
+(‘Shark Attack in Spring Break’, ‘Wortham Theater’, ‘2018-10-16, ‘9:15:00’),
+(‘Yosemite National Park: The Beauty in Wild California’, ‘AMC Miami 15’, ‘2018-10-16', ‘7:25:00’),
+(‘Block Party’, ‘AMC Miami 15’, ‘2018-10-16', ‘8:55:00’),
+(‘Murder in High School Homecoming Dance’, ‘AMC Theater Odessa’, ‘2018-10-16', ‘7:15:00’),
+(‘The Twilight Zone in Time Machine’, ‘AMC Theater Odessa’, ‘2018-10-16', ‘10:10:00’),
+(‘Trapped in Vietnam’, ‘Hawkins Southfield 18’, ‘2018-10-16’, ‘6:45:00’),
+(‘The Twilight Zone in Time Machine’, ‘Hawkins Southfield 18’, ‘2018-10-16’, ‘6:30:00’),
+(‘Yosemite National Park: The Beauty in Wild California’, ‘Moon Plaza Twin Theaters Pasadena’, ‘2018-10-16', ‘7:45:00’),
+(‘Block Party’, ‘Moon Plaza Twin Theaters Pasadena’, ‘2018-10-16', ‘8:45:00’)
+Add Zip_Code column to Theater Table
+     First you start with: ALTER TABLE THEATER
+                                     ADD Zip_Code char (5);
+     Next:  
+      update Theater set Zip_code = '77002' where Theater_Name = 'Wortham Theatre';
+      update Theater set Zip_code = '25688' where Theater_Name = 'AMC Miami 15';
+      update Theater set Zip_code = '93845' where Theater_Name = AMC Theater Odessa';
+      update Theater set Zip_code = '87815' where Theater_Name = 'Hawkins Southfield 18';
+update Theater set Zip_code = '68971' where Theater_Name = 'Moon Plaza Twin Theaters Pasadena';
+
+Bonus: Define new surrogate primary key attributes.
+ALTER TABLE Show_Time
+DROP constraint Show_TimeFK_MID foreign key (MN) references Movie(MovieName),
+DROP constraint Show_TimeFK_TID foreign key (TN) references Theater(TheaterName)
+ADD constraint Show_TimeFK_MID foreign key (MN) references Movie(MovieID),
+ADD constraint Show_TimeFK_TID foreign key (TN) references Theater(TheaterID)
+
+ALTER TABLE Theater
+DROP constraint TheaterPK_TID primary key (TheaterName)
+ADD Theater_ID smallint(5) unsigned not null
+ADD constraint TheaterPK_TID primary key (TheaterID)
+
+ALTER TABLE Movie
+Drop constraint MoviePK_MID primary key (MovieName)
+ADD Movie_ID smallint(5) unsigned not null
+ADD constraint MoviePK_MID primary key (MovieID)
+UPDATE Theater set TheaterID = ‘1’ where TheaterName = 'Wortham Theater';
+UPDATE Theater set TheaterID = ‘2’ where TheaterName = 'AMC Miami 15';
+UPDATE Theater set TheaterID = ‘3’ where TheaterName = AMC Theater Odessa';
+UPDATE Theater set TheaterID = ‘4’ where TheaterName = 'Hawkins Southfield 18';
+UPDATE Theater set TheaterID = ‘5’ where TheaterName = 'Moon Plaza Twin Theaters Pasadena';
+
+UPDATE Movie set MovieID = ‘1’ where Movie_Name = ‘Murder in High School Homecoming Dance’
+UPDATE Movie set MovieID = ‘2’ where Movie_Name = ‘Shark Attacks in Spring Break’
+UPDATE Movie set MovieID = ‘3’ where Movie_Name = ‘Yosemite National Park: The Beauty in Wild California’
+UPDATE Movie set MovieID = ‘4’ where Movie_Name = ‘Block Party’
+UPDATE Movie set MovieID = ‘5’ where Movie_Name = ‘Trapped in Vietnam’
+UPDATE Movie set MovieID = ‘6’ where Movie_Name = ‘The Twilight Zone in Time Machine’
