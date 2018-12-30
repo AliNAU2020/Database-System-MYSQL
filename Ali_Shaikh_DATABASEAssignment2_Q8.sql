@@ -1,0 +1,3 @@
+SELECT * 
+FROM   PAYMENT 
+WHERE  Amount > 150
